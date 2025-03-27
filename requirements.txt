@@ -1,3 +1,6 @@
 homeassistant==2024.4.1
-ThermiaOnlineAPI@ git+https://github.com/fclauson/python-thermia-online-api.git@main:
+#ThermiaOnlineAPI@ git+https://github.com/fclauson/python-thermia-online-api.git@main:
+# Your forked dependency
+#git+https://github.com/<your_username>/<forked_repo_name>.git@<commit_hash>#egg=<package_name>
+git+https://github.com/fclauson/python-thermia-online-api.git@main=ThermiaOnlineAPI
 
