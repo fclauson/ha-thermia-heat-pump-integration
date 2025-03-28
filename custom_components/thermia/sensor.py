@@ -252,9 +252,9 @@ async def async_setup_entry(
                     UnitOfTemperature.CELSIUS,
                 )
             )
-        ####
+        #####################################
         ## Only available if you have an installer login - Francis 26/03/2025
-        ##
+        #####################################
         if heat_pump.start_hotwater_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
@@ -263,7 +263,7 @@ async def async_setup_entry(
                     "is_online",
                     "Start Hot Water Temperature",
                     MDI_TEMPERATURE_ICON,
-                    EntityCategory.DIAGNOSTIC,
+                    EntityCategory.PRIMARY,
                     "temperature",
                     "measurement",
                     "start_hotwater_temperature",
