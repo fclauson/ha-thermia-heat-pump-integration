@@ -263,7 +263,7 @@ async def async_setup_entry(
                     "is_online",
                     "Start Hot Water Temperature",
                     MDI_TEMPERATURE_ICON,
-                    EntityCategory.PRIMARY,
+                    "",
                     "temperature",
                     "measurement",
                     "start_hotwater_temperature",
