@@ -1,2 +1,2 @@
 homeassistant==2024.4.1
-ThermiaOnlineAPI @ git+https://github.com/fclauson/python-thermia-online-api
+ThermiaOnlineAPI @ git+https://github.com/fclauson/python-thermia-online-api@6.3.1F
