@@ -255,7 +255,7 @@ async def async_setup_entry(
         #####################################
         ## Only available if you have an installer login - Francis 26/03/2025
         #####################################
-        if heat_pump.start_hotwater_temperature is not None:
+        if heat_pump.start_hot_water_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
                     coordinator,
