@@ -266,7 +266,7 @@ async def async_setup_entry(
                     EntityCategory.DIAGNOSTIC,
                     "temperature",
                     "measurement",
-                    "start_hotwater_temperature",
+                    "start_hot_water_temperature",
                     UnitOfTemperature.CELSIUS,
                 )
             )
