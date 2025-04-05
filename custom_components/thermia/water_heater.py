@@ -78,7 +78,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
     def target_temperature(self):
         """Return the temperature we try to reach."""
         ## this will be the start temp value 
-        return self.coordinator.data.heat_pumps[self.idx].start_hot_water_temperature
+        return self.coordinator.data.heat_pumps[self.idx].start_hotwater_temperature
         
     @property
     def current_temperature(self):
