@@ -66,7 +66,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
     @property
     def min_temp(self):
         """Return the minimum temperature."""
-        return 25
+        return 30
 
     @property
     def max_temp(self):
@@ -79,13 +79,13 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
 
     @property
     def target_temperature(self):
-        """Return the temperature we try to reach."""
+        """Return the start temp setting."""
         ## this will be the start temp value 
         return self.coordinator.data.heat_pumps[self.idx].start_hot_water_temperature
         
     @property
     def current_temperature(self):
-        """Return the temperature we try to reach."""
+        """Return the currnt temp of tank."""
         ## this will be the current tank temprature 
         return self.coordinator.data.heat_pumps[self.idx].hot_water_temperature
 
