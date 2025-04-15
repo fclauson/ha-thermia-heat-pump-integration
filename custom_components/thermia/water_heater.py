@@ -39,6 +39,9 @@ async def async_setup_entry(
     async_add_entities(hass_water_heaters)
     
 ###########################################
+# Francis - new device whihc allows for the control of hot water 
+# requires user to have installer priverlidges on their login 
+
 class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterHeaterEntity
 ):
     def __init__(self, coordinator: ThermiaDataUpdateCoordinator, idx: int):
@@ -100,6 +103,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         target_temp = kwargs.get(ATTR_TEMPERATURE)
+        _LOGGER.debug("start water target temperature update : %s", target_temp)
         if target_temp is not None:
             await self.hass.async_add_executor_job(
                 lambda: self.coordinator.data.heat_pumps[self.idx].set_hot_water_start_temperature(
@@ -111,7 +115,8 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
 
     
 ################################################
-    
+# Francis - the original water heater device - this does not work with a Danfoss ATEC unit 
+# 
 class ThermiaWaterHeater(
     CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterHeaterEntity
 ):
