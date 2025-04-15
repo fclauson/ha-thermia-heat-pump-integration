@@ -106,7 +106,7 @@ async def async_setup_entry(
             )
 
          # Added by Francis 
-        if heat_pump.lower_hot_water is not None:
+        if heat_pump.lower_hot_water_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
                     coordinator,
@@ -121,7 +121,7 @@ async def async_setup_entry(
                     UnitOfTemperature.CELSIUS,
                 )
             )
-        if heat_pump.weighted_hot_water is not None:
+        if heat_pump.weighted_hot_water_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
                     coordinator,
