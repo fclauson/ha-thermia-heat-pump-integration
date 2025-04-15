@@ -32,7 +32,8 @@ async def async_setup_entry(
     coordinator: ThermiaDataUpdateCoordinator = hass.data[DOMAIN][config_entry.entry_id]
     
     # code recongigured so that the new StartWaterHeater can be added - Francis 
-        hass_water_heaters = [] 
+    
+    hass_water_heaters = [] 
     for idx in range(len(coordinator.data.heat_pumps)) :
         hass_water_heaters.append(ThermiaWaterHeater(coordinator, idx))
         hass_water_heaters.append(StartWaterHeater(coordinator, idx))
