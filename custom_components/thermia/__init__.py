@@ -19,7 +19,7 @@ PLATFORMS: list[str] = ["binary_sensor", "sensor", "switch", "water_heater"]
 
 
 _LOGGER = logging.getLogger(__name__)
-
+_LOGGER.debug("Thermia heat pumpt integration starting") 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType):
     """Set up the Thermia component."""
