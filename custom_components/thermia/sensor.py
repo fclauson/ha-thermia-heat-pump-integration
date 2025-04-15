@@ -105,6 +105,38 @@ async def async_setup_entry(
                 )
             )
 
+         # Added by Francis 
+        if heat_pump.lower_hot_water is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Lower Hot Water temp ",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    "temperature",
+                    "measurement",
+                    "lower_hot_water_temperature",
+                    UnitOfTemperature.CELSIUS,
+                )
+            )
+        if heat_pump.weighted_hot_water is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Weighted Hot Water Temp",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    "temperature",
+                    "measurement",
+                    "weighted_hot_water_temperature",
+                    UnitOfTemperature.CELSIUS,
+                )
+            )
+
         ###########################################################################
         # Other temperature sensors
         ###########################################################################
@@ -252,6 +284,7 @@ async def async_setup_entry(
                     UnitOfTemperature.CELSIUS,
                 )
             )
+       
         #####################################
         ## Only available if you have an installer login - Francis 26/03/2025
         #####################################
