@@ -105,7 +105,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         target_temp = kwargs.get(ATTR_TEMPERATURE)
-        _LOGGER.debug("start water target temperature update : %s", target_temp)
+        _LOGGER.info("start water target temperature update : %s", target_temp)
         if target_temp is not None:
             await self.hass.async_add_executor_job(
                 lambda: self.coordinator.data.heat_pumps[self.idx].set_hot_water_start_temperature(
