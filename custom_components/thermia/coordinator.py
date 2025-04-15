@@ -20,13 +20,13 @@ class ThermiaDataUpdateCoordinator(DataUpdateCoordinator[Thermia]):
 
         self.thermia = thermia
         
-        # Francis - reducing update to 20 seconds to reduce platform load 
+        # Francis - reducing update to 10 seconds to reduce platform load 
         
         super().__init__(
             hass,
             _LOGGER,
             name=DOMAIN,
-            update_interval=timedelta(seconds=20),
+            update_interval=timedelta(seconds=10),
         )
 
     async def _async_update_data(self):
