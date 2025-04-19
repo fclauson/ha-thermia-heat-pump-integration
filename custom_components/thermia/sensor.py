@@ -458,6 +458,66 @@ async def async_setup_entry(
                     UnitOfPressure.BAR, 
                 )
             )
+        if heat_pump.suction_temp is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Suction Temp",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "suction_temp",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.evaporator_temp is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Evaporator temp",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "evaporator_temp",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.super_heat is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Super Heat",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "super_heat",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.opening_degree is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Opening degree",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "opening_degree",
+                    None, 
+                )
+            )
 
     hass_thermia_active_alarms_sensors = [
         ThermiaActiveAlarmsSensor(coordinator, idx)
