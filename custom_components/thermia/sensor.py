@@ -443,7 +443,7 @@ async def async_setup_entry(
         ###########################################################################
         # Diagnostic data - added by Francis 
         ###########################################################################
-         if heat_pump.evaporator_pressure is not None:
+        if heat_pump.evaporator_pressure is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
                     coordinator,
