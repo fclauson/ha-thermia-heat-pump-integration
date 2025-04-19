@@ -13,5 +13,5 @@
   "requirements": [
     "ThermiaOnlineAPI@git+https://github.com/fclauson/python-thermia-online-api.git@main"
   ],
-  "version": "1.0"
+  "version": "1.0" 
 }
