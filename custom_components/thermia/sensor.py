@@ -440,6 +440,24 @@ async def async_setup_entry(
                     UnitOfTime.HOURS,
                 )
             )
+        ###########################################################################
+        # Diagnostic data - added by Francis 
+        ###########################################################################
+         if heat_pump.evaporator_pressure is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Evaporator Pressure",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "evaporator_pressure",
+                    UnitOfTime.ATMOSPHERIC_PRESSURE,
+                )
+            )
 
     hass_thermia_active_alarms_sensors = [
         ThermiaActiveAlarmsSensor(coordinator, idx)
