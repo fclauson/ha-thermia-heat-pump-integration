@@ -455,7 +455,7 @@ async def async_setup_entry(
                     None,
                     "measurement",
                     "evaporator_pressure",
-                    UnitOfTime.ATMOSPHERIC_PRESSURE,
+                    UnitOfTemperature.ATMOSPHERIC_PRESSURE,
                 )
             )
 
