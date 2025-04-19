@@ -41,8 +41,8 @@ async def async_setup_entry(
     async_add_entities(hass_water_heaters)
     
 ###########################################
-# Francis - new device whihc allows for the control of hot water 
-# requires user to have installer priverlidges on their login 
+# Francis - new device which allows for the control of hot water 
+# requires user to have installer priverlidges on their login so that they can see more parameters from the Thermia 
 
 class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterHeaterEntity
 ):
@@ -117,7 +117,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
 
     
 ################################################
-# Francis - the original water heater device - this does not work with a Danfoss ATEC unit 
+# Francis - this is the original water heater - it controls the ROOM temprature setting 
 # 
 class ThermiaWaterHeater(
     CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterHeaterEntity
