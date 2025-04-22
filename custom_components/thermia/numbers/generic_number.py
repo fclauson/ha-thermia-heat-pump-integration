@@ -1,3 +1,14 @@
+from __future__ import annotations
+
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.components.number import NumberEntity, NumberDeviceClass
+
+from .const import DOMAIN
+from .coordinator import ThermiaDataUpdateCoordinator
+
+
 class GenericNumberEntity:
     """Represents a generic number entity for Home Assistant."""
 
