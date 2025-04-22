@@ -4,13 +4,21 @@ from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.const import UnitOfTemperature, UnitOfTime, UnitOfPressure 
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.components.number import NumberEntity, NumberDeviceClass
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 from .coordinator import ThermiaDataUpdateCoordinator
 from .numbers.generic_number import ThermiaGenericNumberEntity
 
+from .const import (
+    DOMAIN,
+    MDI_TEMPERATURE_ICON,
+    MDI_TIMER_COG_OUTLINE_ICON,
+)
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -37,4 +45,4 @@ async def async_setup_entry(
          )
        )
            
-async_add_entities(hass_thermia_numbers)
+async_add_entities(*hass_thermia_numbers)
