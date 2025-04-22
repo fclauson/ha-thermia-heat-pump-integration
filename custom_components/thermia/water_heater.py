@@ -168,7 +168,10 @@ class ThermiaWaterHeater(
             return default_min_temp
 
         min_temp = self.coordinator.data.heat_pumps[self.idx].heat_min_temperature_value
-
+        
+        ## Min temp hard coded by Francis 
+        min_temp = 18 
+        
         if min_temp is not None:
             return min_temp
         return default_min_temp
@@ -182,7 +185,10 @@ class ThermiaWaterHeater(
             return default_max_temp
 
         max_temp = self.coordinator.data.heat_pumps[self.idx].heat_max_temperature_value
-
+        
+        ## max temp hard coded by Francis 
+        max_temp = 24
+        
         if max_temp is not None:
             return max_temp
         return default_max_temp
