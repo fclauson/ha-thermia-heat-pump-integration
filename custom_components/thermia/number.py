@@ -35,5 +35,6 @@ async def async_setup_entry(
             "0.1",
             UnitOfTemperature.CELSIUS,
          )
+       )
            
 async_add_entities(hass_thermia_numbers)
