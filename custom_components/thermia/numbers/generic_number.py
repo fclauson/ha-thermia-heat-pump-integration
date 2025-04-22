@@ -5,9 +5,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.components.number import NumberEntity, NumberDeviceClass
 
-# from .const import DOMAIN
-# from .coordinator import ThermiaDataUpdateCoordinator
-
+from ..const import DOMAIN
+from ..coordinator import ThermiaDataUpdateCoordinator
 
 class ThermiaGenericSensor(
     CoordinatorEntity[ThermiaDataUpdateCoordinator], NumberEntity
