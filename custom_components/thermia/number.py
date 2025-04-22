@@ -9,6 +9,8 @@ from homeassistant.components.number import NumberEntity, NumberDeviceClass
 
 from .const import DOMAIN
 from .coordinator import ThermiaDataUpdateCoordinator
+from .numbers.generic_number import ThermiaGenericNumberEntity
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -22,5 +24,16 @@ async def async_setup_entry(
     hass_thermia_numbers = []
 
     for idx, heat_pump in enumerate(coordinator.data.heat_pumps):
-        
-    async_add_entities(hass_thermia_numbers)
+       hass_thermia_numbers.append(
+         ThermiaGenericNumberEntity (
+            "FC test",
+            coordinator,
+            idx,
+            "0",
+            "0",
+            "10",
+            "0.1",
+            UnitOfTemperature.CELSIUS,
+         )
+           
+async_add_entities(hass_thermia_numbers)
