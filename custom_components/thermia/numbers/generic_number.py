@@ -8,16 +8,19 @@ from homeassistant.components.number import NumberEntity, NumberDeviceClass
 from .const import DOMAIN
 from .coordinator import ThermiaDataUpdateCoordinator
 
-
-class GenericNumberEntity:
+class ThermiaGenericSensor(
+    CoordinatorEntity[ThermiaDataUpdateCoordinator], SensorEntity
+    
+class ThermiaGenericNumberEntity:
     """Represents a generic number entity for Home Assistant."""
 
-    def __init__(self, name, unique_id, initial_value=0, min_value=None, max_value=None, step=None, unit_of_measurement=None, device_class=None):
+    def __init__(self, name, coordinator, unique_id, initial_value=0, min_value=None, max_value=None, step=None, unit_of_measurement=None, device_class=None):
         """
         Initializes a new GenericNumberEntity.
 
         Args:
             name (str): The friendly name of the entity.
+            coordinator 
             unique_id (str): A unique identifier for the entity.
             initial_value (float, optional): The initial value of the number. Defaults to 0.
             min_value (float, optional): The minimum allowed value. Defaults to None.
@@ -26,6 +29,9 @@ class GenericNumberEntity:
             unit_of_measurement (str, optional): The unit of measurement. Defaults to None.
             device_class (str, optional): The device class of the number entity (e.g., temperature, humidity). Defaults to None.
         """
+        super().__init__(coordinator)
+        self.idx: int = idx
+        
         self._name = name
         self._unique_id = unique_id
         self._state = initial_value
