@@ -2,12 +2,32 @@
 
 from __future__ import annotations
 
-from homeassistant.components.number import NumberEntity, NumberDeviceClass
+import logging
+
+from homeassistant.components.number import Number, NumberDeviceClass
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 
 from ..const import DOMAIN
 from ..coordinator import ThermiaDataUpdateCoordinator
+
+from ThermiaOnlineAPI.const import (
+    REG_GROUP_HEATING_CURVE,
+    REG_DESIRED_DISTR_CIR1,
+    REG_DESIRED_DISTR_CIR2,
+    REG_HEATING_HEAT_CURVE,
+    REG_HEATING_HEAT_CURVE_MIN,
+    REG_HEATING_HEAT_CURVE_MAX,
+    REG_HEATING_CURVE_PLUS5,
+    REG_HEATING_CURVE_0,
+    REG_HEATING_CURVE_MINUS5,
+    REG_HEATING_HEAT_STOP,
+    REG_HEATING_ROOM_FACTOR
+
+)
+
+
+_LOGGER = logging.getLogger(__name__)
 
 class ThermiaGenericNumber(
     CoordinatorEntity[ThermiaDataUpdateCoordinator], NumberEntity
@@ -25,6 +45,7 @@ class ThermiaGenericNumber(
         device_class: str | None,
         state_class : str, 
         value_prop: str,
+        reg_name : str,
         unit_of_measurement=None,
           
     ):
@@ -41,6 +62,8 @@ class ThermiaGenericNumber(
         self._device_class: str | None = device_class
         self._state_class: str = state_class
         self._value_prop: str = value_prop
+        self._reg_name : str = reg_name
+
         self._unit_of_measurement: str | None = unit_of_measurement
         # self.step: float step | None = step
 
@@ -92,11 +115,30 @@ class ThermiaGenericNumber(
         return self._state_class
 
     @property
+    def native_unit_of_measurement(self):
+        """Return the unit of measurement of the number."""
+        return self._unit_of_measurement
+
+    ## Need a way of getting the value - which we have as this is the HC... call 
+    @property
     def native_value(self):
         """Return value of the number."""
         return getattr(self.coordinator.data.heat_pumps[self.idx], self._value_prop)
 
-    @property
-    def native_unit_of_measurement(self):
-        """Return the unit of measurement of the number."""
-        return self._unit_of_measurement
+    # will use this to set the value 
+    # def set_register_data_by_register_group_and_name(
+    #    self, register_group: str, register_name: str, value: int
+    # 
+
+    async def async_set_value(self, value : float):
+        """Set new target temperature."""
+        _LOGGER.info("setting new setting  : %s", value)
+        _LOGGER.info("idx: %s", self.idx)
+        _LOGGER.info("value prop %s",self._value_prop) 
+
+        await self.hass.async_add_executor_job(
+            lambda: self.coordinator.data.heat_pumps[self.idx].set_register_data_by_register_group_and_name( 
+                REG_GROUP_HEATING_CURVE, self._reg_name, value 
+            )
+        )
+
