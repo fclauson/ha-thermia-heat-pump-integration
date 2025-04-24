@@ -15,7 +15,8 @@ from .const import CONF_PASSWORD, CONF_USERNAME, DEBUG_ACTION_NAME, DOMAIN
 from .coordinator import ThermiaDataUpdateCoordinator
 from .services import ThermiaServicesSetup
 
-PLATFORMS: list[str] = ["binary_sensor", "sensor", "switch", "water_heater","number"]
+##PLATFORMS: list[str] = ["binary_sensor", "sensor", "switch", "water_heater","number"]
+PLATFORMS: list[str] = ["number"]
 
 
 _LOGGER = logging.getLogger(__name__)

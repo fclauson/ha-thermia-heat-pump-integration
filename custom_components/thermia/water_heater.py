@@ -114,6 +114,17 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
             )
         else:
             _LOGGER.error("A target temperature must be provided")
+    
+    @property
+    def device_info(self):
+        """Return device information."""
+        return {
+            "identifiers": {(DOMAIN, self.coordinator.data.heat_pumps[self.idx].id)},
+            "name": self.coordinator.data.heat_pumps[self.idx].name,
+            "manufacturer": "Thermia",
+            "model": self.coordinator.data.heat_pumps[self.idx].model,
+            "model_id": self.coordinator.data.heat_pumps[self.idx].model_id,
+        }
 
     
 ################################################

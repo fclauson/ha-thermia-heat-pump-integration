@@ -17,8 +17,6 @@ from .const import (
     MDI_TEMPERATURE_ICON,
     MDI_TIMER_COG_OUTLINE_ICON,
 )
-from .coordinator import ThermiaDataUpdateCoordinator
-
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -105,7 +103,7 @@ async def async_setup_entry(
                 )
             )
 
-         # Added by Francis 
+        # Added by Francis 
         if heat_pump.lower_hot_water_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
@@ -121,6 +119,7 @@ async def async_setup_entry(
                     UnitOfTemperature.CELSIUS,
                 )
             )
+            
         if heat_pump.weighted_hot_water_temperature is not None:
             hass_thermia_sensors.append(
                 ThermiaGenericSensor(
