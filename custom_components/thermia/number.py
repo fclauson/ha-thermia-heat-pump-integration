@@ -50,11 +50,11 @@ async def async_setup_entry(
                     "temperature",
                     "measurement",
                     "HC_REG_HEATING_HEAT_CURVE",
+                    "REG_HEATING_HEAT_CURVE",
                     UnitOfTemperature.CELSIUS,
                 )
             )
 
 
 
-    async_add_entities(hass_thermia_numbers) 
-
+    async_add_entities(hass_thermia_numbers)
