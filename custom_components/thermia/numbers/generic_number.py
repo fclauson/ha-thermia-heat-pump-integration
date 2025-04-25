@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.components.number import NumberEntity 
+from homeassistant.components.number import NumberEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 
@@ -47,6 +47,9 @@ class ThermiaGenericNumber(
         value_prop: str,
         reg_name : str,
         unit_of_measurement=None,
+        smax = None, 
+        smin = None,
+        step = None
           
     ):
         """
@@ -63,6 +66,9 @@ class ThermiaGenericNumber(
         self._state_class: str = state_class
         self._value_prop: str = value_prop
         self._reg_name : str = reg_name
+        self._smax : str = smax 
+        self._smin : str = smin 
+        self._step : str = step 
 
         self._unit_of_measurement: str | None = unit_of_measurement
         # self.step: float step | None = step
@@ -119,22 +125,33 @@ class ThermiaGenericNumber(
         """Return the unit of measurement of the number."""
         return self._unit_of_measurement
 
-    ## Need a way of getting the value - which we have as this is the HC... call 
     @property
     def native_value(self):
         """Return value of the number."""
         return getattr(self.coordinator.data.heat_pumps[self.idx], self._value_prop)
+        
 
-    # will use this to set the value 
-    # def set_register_data_by_register_group_and_name(
-    #    self, register_group: str, register_name: str, value: int
-    # 
+    @property
+    def native_min_value(self):
+        """Return value of the number."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._smin)
+
+    @property
+    def native_max_value(self):
+        """Return value of the number."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._smax)
+
+    @property
+    def native_step(self):
+        """Return value of the number."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._step)
+
 
     async def async_set_value(self, value : float):
         """Set new target temperature."""
-        _LOGGER.info("setting new setting  : %s", value)
-        _LOGGER.info("idx: %s", self.idx)
-        _LOGGER.info("value prop %s",self._value_prop) 
+        _LOGGER.debug("setting new setting  : %s", value)
+        _LOGGER.debug("idx: %s", self.idx)
+        #did _LOGGER.info("value prop %s",self._value_prop) 
 
         await self.hass.async_add_executor_job(
             lambda: self.coordinator.data.heat_pumps[self.idx].set_register_data_by_register_group_and_name( 
