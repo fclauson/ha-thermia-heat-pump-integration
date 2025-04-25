@@ -52,8 +52,92 @@ async def async_setup_entry(
                     "HC_REG_HEATING_HEAT_CURVE",
                     "REG_HEATING_HEAT_CURVE",
                     UnitOfTemperature.CELSIUS,
+                    "HC_REG_HEATING_HEAT_CURVE_max",
+                    "HC_REG_HEATING_HEAT_CURVE_min",
+                    "HC_REG_HEATING_HEAT_CURVE_step",                   
                 )
             )
+        if heat_pump.HC_REG_HEATING_HEAT_CURVE:
+            _LOGGER.debug("inside heat curve")
+            hass_thermia_numbers.append(
+                ThermiaGenericNumber(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "HEATING Supply line miniumm",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.CONFIG,
+                    "temperature",
+                    "measurement",
+                    "HC_REG_HEATING_HEAT_CURVE_MIN",
+                    "REG_HEATING_HEAT_CURVE_MIN",
+                    UnitOfTemperature.CELSIUS,
+                    "HC_REG_HEATING_HEAT_CURVE_MIN_max",
+                    "HC_REG_HEATING_HEAT_CURVE_MIN_min",
+                    "HC_REG_HEATING_HEAT_CURVE_MIN_step",
+                )
+            )
+        if heat_pump.HC_REG_HEATING_HEAT_CURVE:
+            _LOGGER.debug("inside heat curve")
+            hass_thermia_numbers.append(
+                ThermiaGenericNumber(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "HEATING Supply line max. ",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.CONFIG,
+                    "temperature",
+                    "measurement",
+                    "HC_REG_HEATING_HEAT_CURVE_MAX",
+                    "REG_HEATING_HEAT_CURVE_MAX",
+                    UnitOfTemperature.CELSIUS,
+                    "HC_REG_HEATING_HEAT_CURVE_MAX_max",
+                    "HC_REG_HEATING_HEAT_CURVE_MAX_min",
+                    "HC_REG_HEATING_HEAT_CURVE_MAX_step",
+                )
+            ) 
+        if heat_pump.HC_REG_HEATING_HEAT_CURVE:
+            _LOGGER.debug("inside heat curve")
+            hass_thermia_numbers.append(
+                ThermiaGenericNumber(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "HEATING Heat Stop",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.CONFIG,
+                    "temperature",
+                    "measurement",
+                    "HC_REG_HEATING_HEAT_STOP",
+                    "REG_HEATING_HEAT_STOP",
+                    UnitOfTemperature.CELSIUS,
+                    "HC_REG_HEATING_HEAT_STOP_max",
+                    "HC_REG_HEATING_HEAT_STOP_min",
+                    "HC_REG_HEATING_HEAT_STOP_step",
+                )
+            )
+        if heat_pump.HC_REG_HEATING_HEAT_CURVE:
+            _LOGGER.debug("inside heat curve")
+            hass_thermia_numbers.append(
+                ThermiaGenericNumber(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "HEATING Room Factor",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.CONFIG,
+                    "temperature",
+                    "measurement",
+                    "HC_REG_HEATING_ROOM_FACTOR",
+                    "REG_HEATING_ROOM_FACTOR",
+                    UnitOfTemperature.CELSIUS,
+                    "HC_REG_HEATING_ROOM_FACTOR_max",
+                    "HC_REG_HEATING_ROOM_FACTOR_min",
+                    "HC_REG_HEATING_ROOM_FACTOR_step",
+                )
+            )
+
 
 
 
