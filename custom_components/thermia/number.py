@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-# from homeassistant.components.number import NumberEntity
+from homeassistant.components.number import NumberEntity
 from homeassistant.const import UnitOfTemperature, UnitOfTime, UnitOfPressure 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
