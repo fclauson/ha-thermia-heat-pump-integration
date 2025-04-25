@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from homeassistant.components.number import NumberEintity 
+from homeassistant.components.number import NumberEnitity  
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 
