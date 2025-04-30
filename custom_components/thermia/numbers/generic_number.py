@@ -1,101 +1,81 @@
-"""Thermia Generic number integration."""
-
-from __future__ import annotations
-
+from homeassistant.components.number import NumberEntity, NumberDeviceClass, NumberStateClass
+from homeassistant.const import UnitOfTemperature
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 import logging
 
-from homeassistant.components.number import NumberEntity
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
-
-
-from ..const import DOMAIN
-from ..coordinator import ThermiaDataUpdateCoordinator
-
-from ThermiaOnlineAPI.const import (
-    REG_GROUP_HEATING_CURVE,
-    REG_DESIRED_DISTR_CIR1,
-    REG_DESIRED_DISTR_CIR2,
-    REG_HEATING_HEAT_CURVE,
-    REG_HEATING_HEAT_CURVE_MIN,
-    REG_HEATING_HEAT_CURVE_MAX,
-    REG_HEATING_CURVE_PLUS5,
-    REG_HEATING_CURVE_0,
-    REG_HEATING_CURVE_MINUS5,
-    REG_HEATING_HEAT_STOP,
-    REG_HEATING_ROOM_FACTOR
-
-)
-
+from .const import DOMAIN, REG_GROUP_HEATING_CURVE
+from .coordinator import ThermiaDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
 
+
 class ThermiaGenericNumber(
     CoordinatorEntity[ThermiaDataUpdateCoordinator], NumberEntity
-):   
+):
     """Represents a generic number entity for Home Assistant."""
 
+    _attr_has_entity_name = True
+
     def __init__(
-        self, 
-        coordinator, 
-        idx,
-        is_online_prop : str,
+        self,
+        coordinator: ThermiaDataUpdateCoordinator,
+        idx: int,
+        is_online_prop: str,
         number_name: str,
-        mdi_icon : str, 
-        entity_category: str,
-        device_class: str | None,
-        state_class : str, 
+        mdi_icon: str,
+        entity_category: EntityCategory | None,
+        device_class: NumberDeviceClass | None,
+        state_class: NumberStateClass | None,
         value_prop: str,
-        reg_name : str,
-        unit_of_measurement=None,
-        smax = None, 
-        smin = None,
-        step = None
-          
-    ):
+        reg_name: str,
+        native_unit_of_measurement: str | None = None,
+        native_max_value: float | None = None,
+        native_min_value: float | None = None,
+        native_step: float | None = None,
+    ) -> None:
         """
         Initializes a new GenericNumberEntity.
         """
         super().__init__(coordinator)
         self.idx: int = idx
-        
+
         self._is_online_prop: str = is_online_prop
         self._number_name: str = number_name
         self._mdi_icon: str = mdi_icon
-        self._entity_category: str = entity_category
-        self._device_class: str | None = device_class
-        self._state_class: str = state_class
+        self._entity_category: EntityCategory | None = entity_category
+        self._device_class: NumberDeviceClass | None = device_class
+        self._state_class: NumberStateClass | None = state_class
         self._value_prop: str = value_prop
-        self._reg_name : str = reg_name
-        self._smax : str = smax 
-        self._smin : str = smin 
-        self._step : str = step 
+        self._reg_name: str = reg_name
+        self._native_max_value: float | None = native_max_value
+        self._native_min_value: float | None = native_min_value
+        self._native_step: float | None = native_step
 
-        self._unit_of_measurement: str | None = unit_of_measurement
-        # self.step: float step | None = step
+        self._attr_native_unit_of_measurement: str | None = native_unit_of_measurement
 
-        
     @property
-    def available(self):
+    def available(self) -> bool:
         """Return True if entity is available."""
         return getattr(self.coordinator.data.heat_pumps[self.idx], self._is_online_prop)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Return the name of the number."""
         return f"{self.coordinator.data.heat_pumps[self.idx].name} {self._number_name}"
 
     @property
-    def unique_id(self):
+    def unique_id(self) -> str:
         """Return the unique ID of the number."""
         return f"{self.coordinator.data.heat_pumps[self.idx].name}_{self._number_name.lower().replace(' ', '_')}"
 
     @property
-    def icon(self):
+    def icon(self) -> str | None:
         """Return the icon of the number."""
         return self._mdi_icon
 
     @property
-    def device_info(self):
+    def device_info(self) -> dict:
         """Return device information."""
         return {
             "identifiers": {(DOMAIN, self.coordinator.data.heat_pumps[self.idx].id)},
@@ -106,56 +86,51 @@ class ThermiaGenericNumber(
         }
 
     @property
-    def entity_category(self):
+    def entity_category(self) -> EntityCategory | None:
         """Return the category of the number."""
         return self._entity_category
 
     @property
-    def device_class(self):
+    def device_class(self) -> NumberDeviceClass | None:
         """Return the device class of the number."""
         return self._device_class
 
     @property
-    def state_class(self):
+    def state_class(self) -> NumberStateClass | None:
         """Return the state class of the number."""
         return self._state_class
 
     @property
-    def native_unit_of_measurement(self):
-        """Return the unit of measurement of the number."""
-        return self._unit_of_measurement
-
-    @property
-    def native_value(self):
+    def native_value(self) -> float | None:
         """Return value of the number."""
         return getattr(self.coordinator.data.heat_pumps[self.idx], self._value_prop)
-        
 
     @property
-    def native_min_value(self):
-        """Return value of the number."""
-        return getattr(self.coordinator.data.heat_pumps[self.idx], self._smin)
+    def native_min_value(self) -> float | None:
+        """Return the minimum value."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._native_min_value)
 
     @property
-    def native_max_value(self):
-        """Return value of the number."""
-        return getattr(self.coordinator.data.heat_pumps[self.idx], self._smax)
+    def native_max_value(self) -> float | None:
+        """Return the maximum value."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._native_max_value)
 
     @property
-    def native_step(self):
-        """Return value of the number."""
-        return getattr(self.coordinator.data.heat_pumps[self.idx], self._step)
+    def native_step(self) -> float | None:
+        """Return the step value."""
+        return getattr(self.coordinator.data.heat_pumps[self.idx], self._native_step)
 
-
-    async def async_set_value(self, value : float):
-        """Set new target temperature."""
-        _LOGGER.debug("setting new setting  : %s", value)
-        _LOGGER.debug("idx: %s", self.idx)
-        #did _LOGGER.info("value prop %s",self._value_prop) 
+    async def async_set_native_value(self, value: float) -> None:
+        """Set new value."""
+        _LOGGER.debug("Setting new setting: %s for %s", value, self._number_name)
+        _LOGGER.debug("Index: %s", self.idx)
 
         await self.hass.async_add_executor_job(
-            lambda: self.coordinator.data.heat_pumps[self.idx].set_register_data_by_register_group_and_name( 
-                REG_GROUP_HEATING_CURVE, self._reg_name, value 
+            lambda: self.coordinator.data.heat_pumps[
+                self.idx
+            ].set_register_data_by_register_group_and_name(
+                REG_GROUP_HEATING_CURVE, self._reg_name, value
             )
         )
+        await self.coordinator.async_request_refresh()
 
