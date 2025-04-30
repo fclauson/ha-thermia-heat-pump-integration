@@ -1,10 +1,14 @@
+
+from __future__ import annotations
+
 from homeassistant.components.number import NumberEntity, NumberDeviceClass
 from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 import logging
 
-from ..const import DOMAIN, REG_GROUP_HEATING_CURVE
+from ..const import DOMAIN
+from ThermiaOnlineAPI.const import REG_GROUP_HEATING_CURVE
 from ..coordinator import ThermiaDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
