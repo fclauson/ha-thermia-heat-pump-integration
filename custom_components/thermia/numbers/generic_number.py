@@ -1,4 +1,4 @@
-from homeassistant.components.number import NumberEntity, NumberDeviceClass, NumberStateClass
+from homeassistant.components.number import NumberEntity, NumberDeviceClass
 from homeassistant.const import UnitOfTemperature
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
