@@ -89,7 +89,7 @@ class StartWaterHeater ( CoordinatorEntity[ThermiaDataUpdateCoordinator], WaterH
     def current_temperature(self):
         """Return the currnt temp of tank."""
         ## this will be the current tank temprature 
-        return self.coordinator.data.heat_pumps[self.idx].hot_water_temperature
+        return self.coordinator.data.heat_pumps[self.idx].weighted_hot_water_temperature
 
     @property
     def temperature_unit(self):
@@ -227,6 +227,7 @@ class ThermiaWaterHeater(
     @property
     def operation_list(self):
         """List of available operation modes."""
+        # return self.coordinator.data.heat_pumps[self.idx].available_operation_modes
         return self.coordinator.data.heat_pumps[self.idx].available_operation_modes
 
     @property
