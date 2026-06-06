@@ -1,9 +1,9 @@
 {
   "domain": "thermia_online",
   "name": "Thermia Online - FC 2026 Version",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "requirements": [
-    "ThermiaOnlineAPI==1.0.2"
+    "ThermiaOnlineAPI==1.0.3"
   ],
   "dependencies": [],
   "codeowners": ["@fclauson"]
