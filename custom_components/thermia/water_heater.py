@@ -178,10 +178,9 @@ class ThermiaWaterHeater(
         if not self.available:
             return default_min_temp
 
-        min_temp = self.coordinator.data.heat_pumps[self.idx].heat_min_temperature_value
-        
-        ## Min temp hard coded by Francis 
-        min_temp = 18 
+        # Safely try to get the real value. If it's missing, fallback to 18.
+        heat_pump = self.coordinator.data.heat_pumps[self.idx]
+        min_temp = getattr(heat_pump, 'heat_min_temperature_value', 18)
         
         if min_temp is not None:
             return min_temp
@@ -195,10 +194,9 @@ class ThermiaWaterHeater(
         if not self.available:
             return default_max_temp
 
-        max_temp = self.coordinator.data.heat_pumps[self.idx].heat_max_temperature_value
-        
-        ## max temp hard coded by Francis 
-        max_temp = 24
+        # Safely try to get the real value. If it's missing, fallback to 24.
+        heat_pump = self.coordinator.data.heat_pumps[self.idx]
+        max_temp = getattr(heat_pump, 'heat_max_temperature_value', 24)
         
         if max_temp is not None:
             return max_temp
