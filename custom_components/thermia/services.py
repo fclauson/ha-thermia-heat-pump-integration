@@ -34,11 +34,12 @@ class ThermiaServicesSetup:
         """Handle debug service call."""
         entity_ids = await async_extract_entity_ids(self.hass, call)
 
-        entity_ids = list(
-            filter(lambda entity_id: entity_id.startswith("water_heater."), entity_ids)
-        )
+        # Only allow 1 water heater entity
+        entity_ids = [
+            e for e in entity_ids if e.startswith("water_heater.")
+        ]
 
-        if len(entity_ids) == 0 or len(entity_ids) > 1:
+        if len(entity_ids) != 1:
             raise ServiceValidationError(
                 "Exactly one water heater entity should be provided"
             )
@@ -58,25 +59,27 @@ class ThermiaServicesSetup:
 
         device_identifiers = device.identifiers
 
-        if device_identifiers is None:
+        if device is None:
             raise ServiceValidationError(
-                f"Cannot find device identifiers for entity {entity_id}"
+                f"Cannot find device for entity {entity_id}"
             )
 
-        device_identifiers = list(device_identifiers)
-
-        if len(device_identifiers) != 1 and len(device_identifiers[0]) != 2:
+        if not device.identifiers or len(device.identifiers) != 1:
             raise ServiceValidationError(
-                f"Invalid device identifiers for entity {entity_id}"
+                f"Invalid or missing device identifiers for entity {entity_id}"
             )
 
-        heat_pump_id = device_identifiers[0][1]
+        # identifiers is a set → {("domain", "device_id")}
+        domain, heat_pump_id = next(iter(device.identifiers))
 
+        #
+        # 🔍 Locate the heat pump in coordinator data
+        #
         heat_pump = next(
             (
-                heat_pump
-                for heat_pump in self.coordinator.data.heat_pumps
-                if heat_pump.id == heat_pump_id
+                hp
+                for hp in self.coordinator.data.heat_pumps
+                if hp.id == heat_pump_id
             ),
             None,
         )
@@ -84,15 +87,19 @@ class ThermiaServicesSetup:
         if heat_pump is None:
             raise ServiceValidationError("Cannot find heat pump by unique_id")
 
-        debug_data = await self.hass.async_add_executor_job(lambda: heat_pump.debug())
+        #
+        # 📄 Collect debug information
+        #
+        debug_data = await self.hass.async_add_executor_job(
+            lambda: heat_pump.debug()
+        )
 
         def create_debug_file():
             with open(DEFAULT_DEBUG_FILENAME, "w", encoding="utf-8") as report_file:
                 report_file.write(debug_data)
 
             _LOGGER.info(
-                f"Thermia debug file was created and data was written to {
-                    DEFAULT_DEBUG_FILENAME}"
+                f"Thermia debug file created: {DEFAULT_DEBUG_FILENAME}"
             )
 
         await self.hass.async_add_executor_job(create_debug_file)
