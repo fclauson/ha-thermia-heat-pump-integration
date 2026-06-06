@@ -19,7 +19,9 @@ class ThermiaDataUpdateCoordinator(DataUpdateCoordinator[Thermia]):
         """Initialize the data update object."""
 
         self.thermia = thermia
-
+        
+        # Francis - reducing update to 10 seconds to reduce platform load 
+        
         super().__init__(
             hass,
             _LOGGER,

@@ -6,8 +6,8 @@ import logging
 
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import ServiceValidationError
+from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.helpers.service import async_extract_entity_ids
-from homeassistant.helpers import device_registry as dr
 
 from .coordinator import ThermiaDataUpdateCoordinator
 from .const import DEBUG_ACTION_NAME, DEFAULT_DEBUG_FILENAME, DOMAIN
@@ -46,15 +46,18 @@ class ThermiaServicesSetup:
 
         entity_id = entity_ids[0]
 
-        #
-        # 🔧 Get device identifiers using the device registry (HA-supported)
-        #
+        entity_registry = er.async_get(self.hass)
         device_registry = dr.async_get(self.hass)
-        device = device_registry.async_get_device(
-            identifiers=None,
-            connections=None,
-            entity_id=entity_id,
-        )
+
+        entity_entry = entity_registry.async_get(entity_id)
+        if entity_entry is None or entity_entry.device_id is None:
+            raise ServiceValidationError(f"Cannot find device for entity {entity_id}")
+
+        device = device_registry.async_get(entity_entry.device_id)
+        if device is None:
+            raise ServiceValidationError(f"Cannot find device for entity {entity_id}")
+
+        device_identifiers = device.identifiers
 
         if device is None:
             raise ServiceValidationError(

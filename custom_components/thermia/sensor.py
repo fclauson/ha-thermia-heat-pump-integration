@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature, UnitOfTime
+from homeassistant.const import UnitOfTemperature, UnitOfTime, UnitOfPressure 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -17,8 +17,6 @@ from .const import (
     MDI_TEMPERATURE_ICON,
     MDI_TIMER_COG_OUTLINE_ICON,
 )
-from .coordinator import ThermiaDataUpdateCoordinator
-
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -101,6 +99,39 @@ async def async_setup_entry(
                     "temperature",
                     "measurement",
                     "hot_water_temperature",
+                    UnitOfTemperature.CELSIUS,
+                )
+            )
+
+        # Added by Francis 
+        if heat_pump.lower_hot_water_temperature is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Lower Hot Water temp ",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    "temperature",
+                    "measurement",
+                    "lower_hot_water_temperature",
+                    UnitOfTemperature.CELSIUS,
+                )
+            )
+            
+        if heat_pump.weighted_hot_water_temperature is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Weighted Hot Water Temp",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    "temperature",
+                    "measurement",
+                    "weighted_hot_water_temperature",
                     UnitOfTemperature.CELSIUS,
                 )
             )
@@ -252,6 +283,26 @@ async def async_setup_entry(
                     UnitOfTemperature.CELSIUS,
                 )
             )
+       
+        #####################################
+        ## Only available if you have an installer login - Francis 26/03/2025
+        #####################################
+        if heat_pump.start_hot_water_temperature is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Start Hot Water Temperature",
+                    MDI_TEMPERATURE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    "temperature",
+                    "measurement",
+                    "start_hot_water_temperature",
+                    UnitOfTemperature.CELSIUS,
+                )
+            )
+        
 
         ###########################################################################
         # Operational status data
@@ -388,6 +439,84 @@ async def async_setup_entry(
                     UnitOfTime.HOURS,
                 )
             )
+        ###########################################################################
+        # Diagnostic data - added by Francis 
+        ###########################################################################
+        if heat_pump.evaporator_pressure is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Evaporator Pressure",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "evaporator_pressure",
+                    UnitOfPressure.BAR, 
+                )
+            )
+        if heat_pump.suction_temp is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Suction Temp",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "suction_temp",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.evaporator_temp is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Evaporator temp",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "evaporator_temp",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.super_heat is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Super Heat",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "super_heat",
+                    UnitOfTemperature.CELSIUS, 
+                )
+            )
+        if heat_pump.opening_degree is not None:
+            hass_thermia_sensors.append(
+                ThermiaGenericSensor(
+                    coordinator,
+                    idx,
+                    "is_online",
+                    "Opening degree",
+                    MDI_TIMER_COG_OUTLINE_ICON,
+                    EntityCategory.DIAGNOSTIC,
+                    None,
+                    "measurement",
+                    "opening_degree",
+                    None, 
+                )
+            )
 
     hass_thermia_active_alarms_sensors = [
         ThermiaActiveAlarmsSensor(coordinator, idx)
@@ -395,3 +524,4 @@ async def async_setup_entry(
     ]
 
     async_add_entities([*hass_thermia_active_alarms_sensors, *hass_thermia_sensors])
+

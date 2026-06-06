@@ -15,11 +15,12 @@ from .const import CONF_PASSWORD, CONF_USERNAME, DEBUG_ACTION_NAME, DOMAIN
 from .coordinator import ThermiaDataUpdateCoordinator
 from .services import ThermiaServicesSetup
 
-PLATFORMS: list[str] = ["binary_sensor", "sensor", "switch", "water_heater"]
+PLATFORMS: list[str] = ["binary_sensor", "sensor", "switch", "water_heater","number"]
+#PLATFORMS: list[str] = ["number"]
 
 
 _LOGGER = logging.getLogger(__name__)
-
+_LOGGER.debug("Thermia heat pumpt integration starting") 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType):
     """Set up the Thermia component."""
